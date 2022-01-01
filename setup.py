@@ -9,7 +9,7 @@ setup(
     version_config={
         "template": "{tag}",
     },
-    description="A python package to process meteo scientific files using pyspark.",
+    description="A python package to process climate scientific files using pyspark.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     setup_requires=["wheel", "setuptools-git-versioning"],
@@ -20,7 +20,7 @@ setup(
     author="Hussein Awala",
     author_email="hussein.awala.96@gmail.com",
     packages=["meteo_spark"],
-    install_requires=["netCDF4", "pyspark", "xarray"],
+    install_requires=["netCDF4", "pyspark", "xarray", "dask"],
     python_requires=">=3.6",
     license="http://www.apache.org/licenses/LICENSE-2.0",
     classifiers=[
