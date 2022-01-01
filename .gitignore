@@ -2,3 +2,5 @@ data
 meteo-spark-env
 notebooks
 .env
+__pycache__
+*.pyc
