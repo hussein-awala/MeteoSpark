@@ -1,6 +1,6 @@
 # meteo-spark
 
-spark-xarray is an open source project that aims to simplify the Climate Data Analysis
+meteo-spark is an open source project that aims to simplify the Climate Data Analysis
 using [PySpark](https://spark.apache.org/docs/latest/api/python/index.html),
 which allow the processing of very big files saved in the cloud
 ([S3](https://docs.aws.amazon.com/s3), [GCS](https://cloud.google.com/storage/docs),
