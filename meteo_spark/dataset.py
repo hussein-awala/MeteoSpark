@@ -16,9 +16,9 @@ def _read_files(
         paths: Union[List[str], str],
         aws_access_key_id: str = None,
         aws_secret_access_key: str = None,
-        s3_endpoint_url: str = None
+        s3_endpoint_url: str = None,
+        anon: bool = False
 ) -> List[Union[str, AbstractBufferedFile]]:
-    print(f"paths: {paths}")
     if isinstance(paths, str):
         paths = [paths]
     files = []
@@ -35,7 +35,8 @@ def _read_files(
                     path=parsed_url.path,
                     aws_access_key_id=aws_access_key_id,
                     aws_secret_access_key=aws_secret_access_key,
-                    s3_endpoint_url=s3_endpoint_url
+                    s3_endpoint_url=s3_endpoint_url,
+                    anon=anon
                 )
             )
     return files
@@ -59,15 +60,19 @@ def _read_s3_files(
         path: str,
         aws_access_key_id: str = None,
         aws_secret_access_key: str = None,
-        s3_endpoint_url: str = None
+        s3_endpoint_url: str = None,
+        anon: bool = False
 ) -> List[AbstractBufferedFile]:
     args = {}
-    if aws_access_key_id is not None:
-        args["key"] = aws_access_key_id
-    if aws_secret_access_key is not None:
-        args["secret"] = aws_secret_access_key
-    if s3_endpoint_url is not None:
-        args["client_kwargs"] = {"endpoint_url": s3_endpoint_url}
+    if anon:
+        args["anon"] = anon
+    else:
+        if aws_access_key_id is not None:
+            args["key"] = aws_access_key_id
+        if aws_secret_access_key is not None:
+            args["secret"] = aws_secret_access_key
+        if s3_endpoint_url is not None:
+            args["client_kwargs"] = {"endpoint_url": s3_endpoint_url}
     s3 = s3fs.S3FileSystem(**args)
     files_paths = s3.ls(bucket + path)
     files = [s3.open(file_path) for file_path in files_paths]
@@ -82,7 +87,8 @@ def load_dataset(
         engine: str = None,
         aws_access_key_id: str = None,
         aws_secret_access_key: str = None,
-        s3_endpoint_url: str = None
+        s3_endpoint_url: str = None,
+        public_s3_bucket: bool = False
 ) -> RDD:
     """
     Read scientific files (netcdf, grib2, ...) and load them into a pyspark RDD.
@@ -94,6 +100,7 @@ def load_dataset(
     :param aws_access_key_id: AWS S3 access key
     :param aws_secret_access_key: AWS S3 secret key
     :param s3_endpoint_url: S3 endpoint url if different from AWS
+    :param public_s3_bucket: a boolean to specify if the s3 bucket is public
     :return: A spark RDD of xarray datasets
     """
     if engine is None:
@@ -103,7 +110,8 @@ def load_dataset(
         paths=paths,
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
-        s3_endpoint_url=s3_endpoint_url
+        s3_endpoint_url=s3_endpoint_url,
+        anon=public_s3_bucket
     )
 
     # load the files as a xarray dataset
