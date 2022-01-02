@@ -1,4 +1,7 @@
 pyspark
-netCDF4
+h5netcdf
 xarray
 dask
+setuptools
+fsspec
+s3fs
