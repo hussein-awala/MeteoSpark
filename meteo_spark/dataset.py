@@ -17,7 +17,8 @@ def _read_files(
         aws_access_key_id: str = None,
         aws_secret_access_key: str = None,
         s3_endpoint_url: str = None
-) -> List[Union[BinaryIO, AbstractBufferedFile]]:
+) -> List[Union[str, AbstractBufferedFile]]:
+    print(f"paths: {paths}")
     if isinstance(paths, str):
         paths = [paths]
     files = []
@@ -42,13 +43,15 @@ def _read_files(
 
 def _read_local_files(
         path: str
-) -> List[BinaryIO]:
+) -> List[str]:
     split_path = path.split("/")
-    if len(split_path) == 1:
+    if len(split_path) == 1 and split_path[0] != "":
         paths = list(Path("").glob(split_path[0]))
+    elif split_path[0] == "":
+        paths = list(Path("/").glob(os.path.join(*split_path[1:])))
     else:
         paths = list(Path(split_path[0]).glob(os.path.join(*split_path[1:])))
-    return [open(p, "rb") for p in paths if p.is_file()]
+    return [str(p) for p in paths if p.is_file()]
 
 
 def _read_s3_files(
