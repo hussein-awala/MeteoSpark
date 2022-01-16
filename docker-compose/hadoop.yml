@@ -4,7 +4,7 @@ services:
     depends_on:
       - node-slave1
       - node-slave2
-    image: husseinawala/hadoop-yarn:xarray
+    image: husseinawala/hadoop-yarn:meteo-spark
     container_name: node-master
     hostname: node-master
     tty: true
@@ -19,10 +19,10 @@ services:
       - $PROJECT_DIR/notebooks:/root/lab
     networks:
       hadoop-cluster:
-        aliases: 
+        aliases:
           - node-master
   node-slave1:
-    image: husseinawala/hadoop-yarn:xarray
+    image: husseinawala/hadoop-yarn:meteo-spark
     container_name: node-slave1
     hostname: node-slave1
     tty: true
@@ -32,8 +32,9 @@ services:
       hadoop-cluster:
         aliases: 
           - node-slave1
+      default:
   node-slave2:
-    image: husseinawala/hadoop-yarn:xarray
+    image: husseinawala/hadoop-yarn:meteo-spark
     container_name: node-slave2
     hostname: node-slave2
     tty: true

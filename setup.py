@@ -20,7 +20,7 @@ setup(
     author="Hussein Awala",
     author_email="hussein.awala.96@gmail.com",
     packages=["meteo_spark"],
-    install_requires=["netCDF4", "pyspark", "xarray", "dask"],
+    install_requires=["pyspark", "xarray", "dask", "h5netcdf", "fsspec", "s3fs"],
     python_requires=">=3.6",
     license="http://www.apache.org/licenses/LICENSE-2.0",
     classifiers=[
